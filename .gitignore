@@ -50,3 +50,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+.DS_Store
+gradle/
+gradlew
+gradlew.bat
+settings.gradle.kts
