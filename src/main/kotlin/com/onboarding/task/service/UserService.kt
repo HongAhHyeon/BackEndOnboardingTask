@@ -1,11 +1,13 @@
 package com.onboarding.task.service
 
+import com.onboarding.task.dto.request.UserCreateDto
+
 interface UserService {
 
-  fun createUser()
+  fun createUser(createDto: UserCreateDto)
 
-  fun deleteUser()
+  fun deleteUser(id: Long)
 
-  fun signInUser()
+  fun signInUser(userEmail: String, userPw: String)
 
 }
