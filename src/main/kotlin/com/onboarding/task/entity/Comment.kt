@@ -1,4 +1,4 @@
-package com.onboarding.task.domain
+package com.onboarding.task.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -20,10 +20,8 @@ class Comment(
 
     val content: String,
 
-    val postDate: LocalDateTime,
-
     @Id @GeneratedValue
     @Column(name = "comment_id")
     val id: Long? = null
-) {
+) : BaseTimeEntity() {
 }

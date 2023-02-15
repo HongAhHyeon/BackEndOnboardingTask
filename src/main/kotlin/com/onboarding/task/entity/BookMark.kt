@@ -1,8 +1,7 @@
-package com.onboarding.task.domain
+package com.onboarding.task.entity
 
 import com.onboarding.task.enum.BookMarkStatus
 import jakarta.persistence.*
-import kotlin.reflect.jvm.internal.impl.descriptors.deserialization.PlatformDependentDeclarationFilter.All
 
 @Entity
 class BookMark(

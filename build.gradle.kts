@@ -34,6 +34,12 @@ dependencies {
 	testImplementation("io.kotest:kotest-assertions-core:5.5.4")
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
 
+	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
+
+	compileOnly("org.springframework.boot:spring-boot-devtools")
+
 }
 
 tasks.withType<KotlinCompile> {

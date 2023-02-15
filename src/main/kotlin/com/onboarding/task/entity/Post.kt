@@ -1,4 +1,4 @@
-package com.onboarding.task.domain
+package com.onboarding.task.entity
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -7,12 +7,10 @@ import java.time.LocalDateTime
 class Post (
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val user: User,
+    var user: User,
 
     var title: String,
     var content: String,
-    val postDate: LocalDateTime,
-    var modifyDate: LocalDateTime? = null,
 
     @OneToMany(mappedBy = "post")
     var comments: MutableCollection<Comment> = mutableListOf(),
@@ -21,5 +19,8 @@ class Post (
     @Column(name = "post_id")
     val id: Long? = null
 
-) {
+) : BaseTimeEntity() {
+    fun addComment(comment: Comment) {
+        comments.add(comment)
+    }
 }

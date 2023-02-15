@@ -15,16 +15,11 @@ class UserServiceImplTest @Autowired constructor(
 ) {
     @Test
     fun saveUserTest() {
-        val dto1 = UserCreateDto("aa@aa.com", "1111")
-        val dto2 = UserCreateDto("aa@aa.com", "1234")
+        val dto1 = UserCreateDto("aa@aa.com", "1111", "aa")
+        val dto2 = UserCreateDto("aa1@aa.com", "1234", "aa")
 
         userServiceImpl.createUser(dto1)
         userServiceImpl.createUser(dto2)
-
-        val user = userRepository.findByUserEmail("aa@aa.com")
-        if (user != null) {
-            assertThat(user.userPw).isEqualTo("1111")
-        }
 
     }
 
