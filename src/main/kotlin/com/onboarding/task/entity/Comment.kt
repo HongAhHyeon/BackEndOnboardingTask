@@ -13,22 +13,22 @@ import java.time.LocalDateTime
 class Comment(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
-    var writer: User,
+    var writer: User? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    var post: Post,
+    var post: Post? =null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    var parent: Comment,
+    var parent: Comment? = null,
 
     var content: String,
 
     var isDeleted: Boolean = false,
 
     @OneToMany(mappedBy = "parent")
-    var childrenComments : MutableList<Comment>,
+    var childrenComments : MutableList<Comment>? = null,
 
     @Id @GeneratedValue
     @Column(name = "comment_id")
@@ -57,11 +57,11 @@ class Comment(
 
     fun Parent(parent: Comment) {
         this.parent = parent
-        parent.childrenComments.add(this)
+        parent.childrenComments?.add(this)
     }
 
     fun addChildren(child: Comment) {
-        childrenComments.add(child)
+        childrenComments?.add(child)
     }
 
 }
