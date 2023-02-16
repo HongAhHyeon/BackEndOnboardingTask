@@ -1,0 +1,10 @@
+jwt:
+  secret: 엄청나게긴시크릿암호화키가필요하기때문에아주아주길게길게나만아는거로쓰겠습니다
+
+  access:
+    expiration: 80
+    header: Authorization
+
+  refresh:
+    expiration: 90
+    header: Authorization-refresh

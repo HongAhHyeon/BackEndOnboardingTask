@@ -40,6 +40,8 @@ dependencies {
 
 	compileOnly("org.springframework.boot:spring-boot-devtools")
 
+	implementation ("com.auth0:java-jwt:3.18.2")
+
 }
 
 tasks.withType<KotlinCompile> {

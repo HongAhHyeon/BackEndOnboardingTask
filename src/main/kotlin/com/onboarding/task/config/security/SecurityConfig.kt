@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.onboarding.task.filter.JsonUserEmailPasswordAuthenticationFilter
 import com.onboarding.task.handler.SignInFailureHandler
 import com.onboarding.task.handler.SignInSuccessJWTProvideHandler
+import com.onboarding.task.repository.UserRepository
+import com.onboarding.task.service.JwtService
 import com.onboarding.task.service.SignInService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,13 +20,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.logout.LogoutFilter
 import java.lang.Exception
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig (
     private val objectMapper: ObjectMapper,
-    private val signInService: SignInService
+    private val signInService: SignInService,
+    private val userRepository: UserRepository,
+    private val jwtService: JwtService
 ){
     @Bean
     fun passwordEncoder() : PasswordEncoder {
@@ -43,6 +48,7 @@ class SecurityConfig (
             .authorizeHttpRequests()
             .anyRequest().authenticated()
 
+        http.addFilterAfter(jsonUserEmailPasswordSignInFilter(), LogoutFilter::class.java)
         return http.build()
     }
 
@@ -63,11 +69,21 @@ class SecurityConfig (
 
     @Bean
     fun signInSuccessJWTProvideHandler() : SignInSuccessJWTProvideHandler {
-        return SignInSuccessJWTProvideHandler()
+        return SignInSuccessJWTProvideHandler(jwtService, userRepository)
     }
 
     @Bean
     fun signInFailurHandler() : SignInFailureHandler {
         return SignInFailureHandler()
     }
+
+    @Bean
+    fun JsonUserEmailPasswordAuthenticationFilter() : JsonUserEmailPasswordAuthenticationFilter {
+        val jsonUserEmailPasswordAuthenticationFilter = JsonUserEmailPasswordAuthenticationFilter(objectMapper)
+        jsonUserEmailPasswordAuthenticationFilter.setAuthenticationManager(authenticationManager())
+        jsonUserEmailPasswordAuthenticationFilter.setAuthenticationSuccessHandler(signInSuccessJWTProvideHandler())
+        jsonUserEmailPasswordAuthenticationFilter.setAuthenticationFailureHandler(signInFailurHandler())
+        return jsonUserEmailPasswordAuthenticationFilter
+    }
+
 }

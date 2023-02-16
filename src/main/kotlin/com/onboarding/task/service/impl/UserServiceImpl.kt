@@ -9,6 +9,7 @@ import com.onboarding.task.dto.response.UserInfoResponse
 import com.onboarding.task.repository.UserRepository
 import com.onboarding.task.service.TokenService
 import com.onboarding.task.service.UserService
+import com.onboarding.task.util.SecurityUtil
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -54,7 +55,9 @@ class UserServiceImpl(
     }
 
     override fun updateUserPw(checkPw: String, newPw: String) {
-
+        val user = userRepository.findByUserEmail(SecurityUtil.getSignInUsername()) ?: throw Exception("사용자 정보 없음.")
+        if(!user.validatePw(passwordEncoder, checkPw)) throw Exception("비밀번호가 일치하지 않습니다.")
+        user.updateUserPw(passwordEncoder, newPw)
     }
 
     override fun getUserInfo(id: Long): UserInfoResponse {

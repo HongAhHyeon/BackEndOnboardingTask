@@ -14,6 +14,8 @@ class User (
     @Enumerated(EnumType.STRING)
     val role: UserRole? = UserRole.USER,
 
+    var refreshToken: String? = null,
+
     @OneToMany(mappedBy = "writer", cascade = [CascadeType.ALL], orphanRemoval = true)
     val posts: MutableList<Post> = mutableListOf(),
 
@@ -37,6 +39,14 @@ class User (
         this.userName = name
     }
 
+    fun updateRefreshToken(refreshToken: String) {
+        this.refreshToken = refreshToken
+    }
+
+    fun destroyRefreshToken() {
+        this.refreshToken = null
+    }
+
     fun addPost(post: Post) {
         posts.add(post)
     }
@@ -51,6 +61,11 @@ class User (
     // 비밀번호 암호화
     fun encodePw(passwordEncoder: PasswordEncoder) {
         this.userPw = passwordEncoder.encode(userPw)
+    }
+
+    // 비밀번호 일치 여부
+    fun validatePw(passwordEncoder: PasswordEncoder, checkPw: String) : Boolean {
+        return passwordEncoder.matches(checkPw, userPw)
     }
 
 }
