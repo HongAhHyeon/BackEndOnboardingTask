@@ -6,12 +6,12 @@ import jakarta.persistence.*
 @Entity
 class BookMark(
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    val user: User,
+    @JoinColumn(name = "member_id")
+    val member: Member,
 
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    val post: Post,
+    @JoinColumn(name = "board_id")
+    val board: Board,
 
     @Enumerated(EnumType.STRING)
     var status: BookMarkStatus = BookMarkStatus.MARKED,

@@ -16,7 +16,7 @@ interface JwtService{
 
     fun extractAccessToken(request: HttpServletRequest) : Optional<String>?
     fun extractRefreshToken(request: HttpServletRequest) : Optional<String>?
-    fun extractUserEmail(accessToken: String) : Optional<String>?
+    fun extractMemberEmail(accessToken: String) : Optional<String>?
 
     fun setAccessTokenHeader(response: HttpServletResponse, accessToken: String)
     fun setRefreshTokenHeader(response: HttpServletResponse, refreshToken: String)

@@ -2,8 +2,7 @@ package com.onboarding.task.service.impl
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.onboarding.task.repository.UserRepository
+import com.onboarding.task.repository.MemberRepository
 import com.onboarding.task.service.JwtService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -33,7 +32,7 @@ class JwtServiceImpl (
     private val USEREMAIL_CLAIM: String = "useremail",
     private val BEARER : String = "Bearer",
 
-    private val userRepository: UserRepository,
+    private val memberRepository: MemberRepository,
 //    private val objectMapper: ObjectMapper
 
     ) : JwtService {
@@ -53,12 +52,12 @@ class JwtServiceImpl (
     }
 
     override fun updateRefreshToken(userEmail: String, refreshToken: String) {
-        val user = userRepository.findByUserEmail(userEmail) ?: throw Exception("사용자 정보 없음.")
+        val user = memberRepository.findByMemberEmail(userEmail) ?: throw Exception("사용자 정보 없음.")
         user.updateRefreshToken(refreshToken)
     }
 
     override fun destroyRefreshToken(userEmail: String) {
-        val user = userRepository.findByUserEmail(userEmail) ?: throw Exception("사용자 정보 없음.")
+        val user = memberRepository.findByMemberEmail(userEmail) ?: throw Exception("사용자 정보 없음.")
         user.destroyRefreshToken()
     }
 
@@ -102,7 +101,7 @@ class JwtServiceImpl (
         }.map { refreshToken -> refreshToken.replace(BEARER, "") }
     }
 
-    override fun extractUserEmail(accessToken: String) : Optional<String>? {
+    override fun extractMemberEmail(accessToken: String) : Optional<String>? {
 //        return JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USEREMAIL_CLAIM).asString()
         return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USEREMAIL_CLAIM).asString())
     }

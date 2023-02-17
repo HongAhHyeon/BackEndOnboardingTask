@@ -1,6 +1,5 @@
 package com.onboarding.task.handler
 
-import com.onboarding.task.service.impl.UserServiceImpl
 import org.junit.jupiter.api.Test
 import java.util.Base64
 import org.assertj.core.api.AssertionsForInterfaceTypes.assertThat

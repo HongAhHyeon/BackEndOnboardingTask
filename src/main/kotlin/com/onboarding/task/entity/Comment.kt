@@ -8,16 +8,16 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
-import java.time.LocalDateTime
+
 @Entity
 class Comment(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
-    var writer: User? = null,
+    var writer: Member? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    var post: Post? =null,
+    @JoinColumn(name = "board_id")
+    var board: Board? =null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -45,14 +45,14 @@ class Comment(
         this.isDeleted = true
     }
 
-    fun confirmWriter(writer: User) {
+    fun confirmWriter(writer: Member) {
         this.writer = writer
         writer.comments.add(this)
     }
 
-    fun confirmPost(post: Post) {
-        this.post = post
-        post.comments.add(this)
+    fun confirmPost(board: Board) {
+        this.board = board
+        board.comments.add(this)
     }
 
     fun Parent(parent: Comment) {

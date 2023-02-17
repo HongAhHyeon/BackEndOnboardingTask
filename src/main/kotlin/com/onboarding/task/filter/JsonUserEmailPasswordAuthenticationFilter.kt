@@ -13,13 +13,13 @@ import java.nio.charset.StandardCharsets
 
 class JsonUserEmailPasswordAuthenticationFilter (
     private var objectMapper: ObjectMapper,
-    private val DEFAULT_SIGNIN_REQUEST_URL: String = "/signIn",
+    private val DEFAULT_LOGIN_REQUEST_URL: String = "/login",
     private val HTTP_METHOD: String = "POST",
     private val CONTENT_TYPE: String = "application/json",
-    private val USEREMAIL_KEY: String = "useremail",
+    private val USEREMAIL_KEY: String = "username",
     private val PASSWORD_KEY: String = "password",
-    private val DEFAULT_SIGNIN_PATH_REQUEST_MATCHER: AntPathRequestMatcher = AntPathRequestMatcher(DEFAULT_SIGNIN_REQUEST_URL, HTTP_METHOD)
-) : AbstractAuthenticationProcessingFilter(DEFAULT_SIGNIN_PATH_REQUEST_MATCHER) {
+    private val DEFAULT_LOGIN_PATH_REQUEST_MATCHER: AntPathRequestMatcher = AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD)
+) : AbstractAuthenticationProcessingFilter(DEFAULT_LOGIN_PATH_REQUEST_MATCHER) {
 
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {

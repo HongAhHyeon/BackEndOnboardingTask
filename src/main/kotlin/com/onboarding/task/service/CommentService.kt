@@ -6,7 +6,7 @@ import com.onboarding.task.entity.Comment
 
 interface CommentService {
 
-    fun createComment(postId: Long, req: CommentCreateRequest)
+    fun createComment(boardId: Long, req: CommentCreateRequest)
 
     fun updateComment(id: Long, req: CommentUpdateRequest)
 

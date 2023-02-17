@@ -1,11 +1,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+	val kotlinVersion = "1.7.22"
 	id("org.springframework.boot") version "3.0.2"
 	id("io.spring.dependency-management") version "1.1.0"
 	kotlin("jvm") version "1.7.22"
 	kotlin("plugin.spring") version "1.7.22"
 	kotlin("plugin.jpa") version "1.7.22"
+	id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
+	kotlin("kapt") version kotlinVersion
+	idea
 }
 
 group = "com.onboarding"
@@ -41,6 +45,12 @@ dependencies {
 	compileOnly("org.springframework.boot:spring-boot-devtools")
 
 	implementation ("com.auth0:java-jwt:3.18.2")
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+	runtimeOnly("com.h2database:h2")
+
 
 }
 
@@ -53,4 +63,12 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+idea {
+	module {
+		val kaptMain = file("build/generated/source/kapt/main")
+		sourceDirs.add(kaptMain)
+		generatedSourceDirs.add(kaptMain)
+	}
 }

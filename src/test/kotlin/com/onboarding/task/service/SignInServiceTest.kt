@@ -1,16 +1,11 @@
 package com.onboarding.task.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.onboarding.task.entity.User
-import com.onboarding.task.enum.UserRole
-import com.onboarding.task.repository.UserRepository
-import io.kotest.assertions.print.print
+import com.onboarding.task.entity.Member
+import com.onboarding.task.enum.MemberRole
+import com.onboarding.task.repository.MemberRepository
 import jakarta.persistence.EntityManager
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.http.MediaType.*
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 class SignInServiceTest @Autowired constructor(
     val mockMvc: MockMvc,
-    val userRepository: UserRepository,
+    val memberRepository: MemberRepository,
     val em: EntityManager,
     val delegatingPasswordEncoder: PasswordEncoder? = PasswordEncoderFactories.createDelegatingPasswordEncoder(),
     val objectMapper: ObjectMapper = ObjectMapper(),
@@ -52,7 +47,7 @@ class SignInServiceTest @Autowired constructor(
 
     @BeforeEach
     fun init() {
-        userRepository.save(User(USEREMAIL, delegatingPasswordEncoder!!.encode(PASSWORD), "User1", UserRole.USER))
+        memberRepository.save(Member(USEREMAIL, delegatingPasswordEncoder!!.encode(PASSWORD), "User1", MemberRole.USER))
         clear()
     }
 
