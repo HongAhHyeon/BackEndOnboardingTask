@@ -14,7 +14,7 @@ class Member (
     @Enumerated(EnumType.STRING)
     val role: MemberRole = MemberRole.USER,
 
-    var refreshToken: String? = null,
+    private var refreshToken: String? = null,
 
     @OneToMany(mappedBy = "writer", cascade = [CascadeType.ALL], orphanRemoval = true)
     val boards: MutableList<Board> = mutableListOf(),

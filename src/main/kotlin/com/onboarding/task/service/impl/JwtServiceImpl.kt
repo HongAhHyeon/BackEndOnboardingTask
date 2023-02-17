@@ -2,6 +2,7 @@ package com.onboarding.task.service.impl
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.onboarding.task.repository.MemberRepository
 import com.onboarding.task.service.JwtService
 import jakarta.servlet.http.HttpServletRequest
@@ -33,7 +34,6 @@ class JwtServiceImpl (
     private val BEARER : String = "Bearer",
 
     private val memberRepository: MemberRepository,
-//    private val objectMapper: ObjectMapper
 
     ) : JwtService {
     override fun createAccessToken(userEmail: String): String {
@@ -72,10 +72,6 @@ class JwtServiceImpl (
         tokenMap[ACCESS_TOKEN_SUBJECT] = accessToken
         tokenMap[REFRESH_TOKEN_SUBJECT] = refreshToken
 
-//        val token = objectMapper.writeValueAsString(tokenMap)
-//
-//        response.writer.write(token)
-
     }
 
     override fun sendAccessToken(response: HttpServletResponse, accessToken: String) {
@@ -87,22 +83,20 @@ class JwtServiceImpl (
         tokenMap[ACCESS_TOKEN_SUBJECT] = accessToken
     }
 
-    override fun extractAccessToken(request: HttpServletRequest) : Optional<String>? {
+    override fun extractAccessToken(request: HttpServletRequest) : Optional<String> {
 //        return Optional.ofNullable(request.getHeader(accessHeader)).map { accessToken -> accessToken.replace(BEARER, "") }.orElse(null)
         return Optional.ofNullable(request.getHeader(accessHeader)).filter {
             accessToken -> accessToken.startsWith(BEARER)}
             .map { accessToken -> accessToken.replace(BEARER, "") }
     }
 
-    override fun extractRefreshToken(request: HttpServletRequest) : Optional<String>? {
-//        return Optional.ofNullable(request.getHeader(refreshHeader)).map { refreshToken -> refreshToken.replace(BEARER, "") }.orElse(null)
+    override fun extractRefreshToken(request: HttpServletRequest) : Optional<String> {
         return Optional.ofNullable(request.getHeader(refreshHeader)).filter {
             refreshToken -> refreshToken.startsWith(BEARER)
         }.map { refreshToken -> refreshToken.replace(BEARER, "") }
     }
 
-    override fun extractMemberEmail(accessToken: String) : Optional<String>? {
-//        return JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USEREMAIL_CLAIM).asString()
+    override fun extractMemberEmail(accessToken: String) : Optional<String> {
         return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USEREMAIL_CLAIM).asString())
     }
 

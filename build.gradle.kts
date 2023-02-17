@@ -44,7 +44,10 @@ dependencies {
 
 	compileOnly("org.springframework.boot:spring-boot-devtools")
 
+	// JWT 오픈 소스
 	implementation ("com.auth0:java-jwt:3.18.2")
+
+	// QueryDSL
 	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 

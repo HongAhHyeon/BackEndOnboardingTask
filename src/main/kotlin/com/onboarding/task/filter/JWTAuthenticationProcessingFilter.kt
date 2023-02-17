@@ -34,24 +34,26 @@ class JWTAuthenticationProcessingFilter (
         }
 
         val refreshToken: Optional<String>? = jwtService.extractRefreshToken(request)
-            ?.filter { jwtService.isTokenValid(it.toString()) }
-//            .extractRefreshToken(request)
-//            ?.filter{jwtService.isTokenValid(it)} ?: null
+            .filter { jwtService.isTokenValid(it.toString()) } ?: null
 
-        checkRefreshTokenAndReIssueAccessToken(response, refreshToken)
+        if(refreshToken != null) {
+            checkRefreshTokenAndReIssueAccessToken(response, refreshToken)
+            return
+        }
+
         checkAccessTokenAndAuthentication(request, response, filterChain)
     }
 
-    fun checkAccessTokenAndAuthentication(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-        jwtService.extractAccessToken(request)?.filter{jwtService.isTokenValid(it)}?.let { jwtService.extractMemberEmail(it.toString())}
-            ?.let { memberRepository.findByMemberEmail(it.toString()) }
+    private fun checkAccessTokenAndAuthentication(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+        jwtService.extractAccessToken(request).filter{jwtService.isTokenValid(it.toString())}.let { jwtService.extractMemberEmail(it.toString())}
+            .let { memberRepository.findByMemberEmail(it.toString()) }
             ?.let { saveAuthentication(it) }
 
         filterChain.doFilter(request, response)
 
     }
 
-    fun saveAuthentication(member: Member) {
+    private fun saveAuthentication(member: Member) {
         val user: UserDetails = User.builder()
             .username(member.memberEmail)
             .password(member.memberPw)
@@ -65,8 +67,8 @@ class JWTAuthenticationProcessingFilter (
         SecurityContextHolder.setContext(context)
     }
 
-    fun checkRefreshTokenAndReIssueAccessToken(response: HttpServletResponse, refreshToken: Optional<String>?) {
-        memberRepository.findByRefreshToken(refreshToken)?.let { jwtService.sendAccessToken(response, jwtService.createAccessToken(it.memberEmail)) }
+    private fun checkRefreshTokenAndReIssueAccessToken(response: HttpServletResponse, refreshToken: Optional<String>?) {
+        memberRepository.findByRefreshToken(refreshToken.toString())?.let { jwtService.sendAccessToken(response, jwtService.createAccessToken(it.memberEmail)) }
     }
 
 }

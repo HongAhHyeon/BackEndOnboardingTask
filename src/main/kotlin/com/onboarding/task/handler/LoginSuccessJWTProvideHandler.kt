@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 
 class LoginSuccessJWTProvideHandler (
-    val jwtService: JwtService,
+    private val jwtService: JwtService,
     val memberRepository: MemberRepository
 
 ) : SimpleUrlAuthenticationSuccessHandler() {
@@ -35,7 +35,7 @@ class LoginSuccessJWTProvideHandler (
 
     }
 
-    fun extractUserEmail(authentication: Authentication) : String {
+    private fun extractUserEmail(authentication: Authentication) : String {
         val userDetails: UserDetails = authentication.principal as UserDetails
         return userDetails.username
     }
