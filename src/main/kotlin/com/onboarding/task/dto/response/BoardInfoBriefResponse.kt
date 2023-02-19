@@ -4,8 +4,8 @@ import com.onboarding.task.entity.Board
 
 
 data class BoardInfoBriefResponse (
+    val id: Long,
     val title: String,
-    val content: String,
     val writerName: String,
     val createdDate: String
 ) {
@@ -13,8 +13,8 @@ data class BoardInfoBriefResponse (
     companion object {
         fun of(board: Board): BoardInfoBriefResponse {
             return BoardInfoBriefResponse(
+                id = board.id!!,
                 title = board.title,
-                content = board.content,
                 writerName = board.writer!!.memberName,
                 createdDate = board.createdAt.toString()
             )

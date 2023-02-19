@@ -4,7 +4,7 @@ import com.onboarding.task.entity.Board
 
 
 data class BoardInfoResponse (
-    val postId: Long,
+    val Id: Long,
     val title: String,
     val content: String,
     val writerDto: MemberInfoResponse,
@@ -14,7 +14,7 @@ data class BoardInfoResponse (
     companion object {
         fun of(board: Board): BoardInfoResponse {
             return BoardInfoResponse(
-                postId = board.id!!,
+                Id = board.id!!,
                 title = board.title,
                 content = board.content,
                 writerDto = MemberInfoResponse.of(board.writer!!),

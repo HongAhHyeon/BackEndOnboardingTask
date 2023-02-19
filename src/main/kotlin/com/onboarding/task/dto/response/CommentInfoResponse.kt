@@ -4,19 +4,21 @@ import com.onboarding.task.entity.Comment
 
 
 data class CommentInfoResponse (
-    val postId: Long,
+    val boardId: Long,
     val commentId: Long,
     val content: String,
+    val createdAt: String,
     val writerDto: MemberInfoResponse,
 ) {
 
     companion object {
         fun of(comment: Comment): CommentInfoResponse {
             return CommentInfoResponse(
-                postId = comment.board!!.id!!,
+                boardId = comment.board!!.id!!,
                 commentId = comment.id!!,
                 content = comment.content,
-                writerDto = MemberInfoResponse.of(comment.writer!!),
+                createdAt = comment.createdAt.toString(),
+                writerDto = MemberInfoResponse.of(comment.writer!!)
             )
         }
     }

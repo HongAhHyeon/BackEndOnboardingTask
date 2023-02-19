@@ -9,7 +9,9 @@ data class CommentCreateRequest(
     ) {
     fun toEntity() : Comment {
         return Comment (
-            content = content
+            content = content,
         )
     }
+
+    constructor() : this("")
 }

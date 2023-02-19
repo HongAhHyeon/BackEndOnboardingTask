@@ -19,11 +19,12 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.logout.LogoutFilter
 import java.lang.Exception
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 class SecurityConfig (
     private val objectMapper: ObjectMapper,
     private val signInService: SignInService,
@@ -45,8 +46,8 @@ class SecurityConfig (
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests()
-            .requestMatchers("/login", "/signUp", "/").permitAll()
-            .anyRequest().authenticated()
+            .requestMatchers("/**").permitAll()
+            .anyRequest().permitAll()
 
 
         http.addFilterAfter(jsonUserEmailPasswordLoginFilter(), LogoutFilter::class.java)

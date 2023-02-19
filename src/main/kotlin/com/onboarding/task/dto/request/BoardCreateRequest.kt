@@ -15,4 +15,6 @@ data class BoardCreateRequest(
             content = content
         )
     }
+
+    constructor() : this("", "")
 }

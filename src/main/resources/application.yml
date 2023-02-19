@@ -23,5 +23,14 @@ spring:
 
     open-in-view: false
 
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
   profiles:
     include: jwt

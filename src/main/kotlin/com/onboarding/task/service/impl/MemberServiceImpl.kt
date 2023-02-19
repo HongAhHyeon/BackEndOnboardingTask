@@ -24,7 +24,7 @@ class MemberServiceImpl(
 
     @Transactional
     override fun signUpUser(req: MemberSignUpRequest) {
-        validateUserInfo(req.userEmail, req.userName)
+        validateUserInfo(req.memberEmail, req.memberName)
 
         val newUser = req.toEntity(passwordEncoder)
         memberRepository.save(newUser)
@@ -60,6 +60,7 @@ class MemberServiceImpl(
         user.updateMemberPw(passwordEncoder, newPw)
     }
 
+    @Transactional(readOnly = true)
     override fun getUserInfo(id: Long): MemberInfoResponse {
         val user = memberRepository.findByIdOrNull(id) ?: throw IllegalArgumentException("사용자 정보 없음.")
         return MemberInfoResponse.of(user)

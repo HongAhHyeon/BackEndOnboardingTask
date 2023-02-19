@@ -5,4 +5,5 @@ class BoardUpdateRequest (
     val title: String,
     val content: String
 ){
+    constructor() : this(0L, "", "")
 }

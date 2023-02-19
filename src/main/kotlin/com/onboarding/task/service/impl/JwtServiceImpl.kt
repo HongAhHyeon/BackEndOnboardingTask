@@ -13,6 +13,10 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.collections.HashMap
 
+private val ACCESS_TOKEN_SUBJECT: String = "AccessToken"
+private val REFRESH_TOKEN_SUBJECT: String = "RefreshToken"
+private val USEREMAIL_CLAIM: String = "useremail"
+private val BEARER : String = "Bearer"
 @Transactional
 @Service
 class JwtServiceImpl (
@@ -27,11 +31,6 @@ class JwtServiceImpl (
     val accessHeader: String,
     @Value("\${jwt.refresh.header}")
     val refreshHeader: String,
-
-    private val ACCESS_TOKEN_SUBJECT: String = "AccessToken",
-    private val REFRESH_TOKEN_SUBJECT: String = "RefreshToken",
-    private val USEREMAIL_CLAIM: String = "useremail",
-    private val BEARER : String = "Bearer",
 
     private val memberRepository: MemberRepository,
 

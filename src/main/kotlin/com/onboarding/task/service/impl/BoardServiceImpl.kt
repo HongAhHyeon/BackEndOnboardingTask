@@ -3,6 +3,7 @@ package com.onboarding.task.service.impl
 import com.onboarding.task.entity.Board
 import com.onboarding.task.dto.request.BoardCreateRequest
 import com.onboarding.task.dto.request.BoardUpdateRequest
+import com.onboarding.task.dto.response.BoardInfoBriefResponse
 import com.onboarding.task.dto.response.BoardInfoResponse
 import com.onboarding.task.dto.response.BoardPagingResponse
 import com.onboarding.task.entity.condition.BoardSearchCondition
@@ -21,32 +22,37 @@ class BoardServiceImpl(
     private val memberRepository: MemberRepository
 ) : BoardService {
     override fun createBoard(req: BoardCreateRequest) {
-        val post = req.toEntity()
+        val board = req.toEntity()
 
-        post.confirmWriter(memberRepository.findByMemberEmail(SecurityUtil.getSignInUsername()) ?: throw IllegalArgumentException("사용자 정보 없음."))
-        boardRepository.save(post)
+//        post.confirmWriter(memberRepository.findByMemberEmail(SecurityUtil.getSignInUsername()) ?: throw IllegalArgumentException("사용자 정보 없음."))
+        board.confirmWriter(memberRepository.findByMemberEmail("test@test.com") ?: throw IllegalArgumentException("사용자 정보 없음."))
+        boardRepository.save(board)
     }
 
     override fun updateBoard(req: BoardUpdateRequest) {
-        val post = boardRepository.findByIdOrNull(req.id) ?: throw Exception("게시글 정보 없음.")
-        checkAuthority(post)
-        post.updateTitle(req.title)
-        post.updateContent(req.content)
+        val board = boardRepository.findByIdOrNull(req.id) ?: throw Exception("게시글 정보 없음.")
+//        checkAuthority(board)
+        board.updateTitle(req.title)
+        board.updateContent(req.content)
     }
 
     override fun deleteBoard(id: Long) {
-        val post = boardRepository.findByIdOrNull(id) ?: throw Exception("게시글 정보 없음.")
-        checkAuthority(post)
-        boardRepository.delete(post)
+        val board = boardRepository.findByIdOrNull(id) ?: throw Exception("게시글 정보 없음.")
+//        checkAuthority(board)
+        boardRepository.delete(board)
     }
 
     override fun getBoard(id: Long): BoardInfoResponse {
-        val post = boardRepository.findByIdOrNull(id) ?: throw Exception("게시글 정보 없음.")
-        return BoardInfoResponse.of(post)
+        val board = boardRepository.findByIdOrNull(id) ?: throw Exception("게시글 정보 없음.")
+        return BoardInfoResponse.of(board)
     }
 
     override fun getBoards(pageable: Pageable, boardSearchCondition: BoardSearchCondition): BoardPagingResponse {
         return BoardPagingResponse.of(boardRepository.search(boardSearchCondition, pageable))
+    }
+
+    override fun getBoardsSimple(): MutableList<BoardInfoBriefResponse> {
+        return boardRepository.getBoardsBrief()
     }
 
     private fun checkAuthority(board: Board) {

@@ -23,25 +23,28 @@ class JWTAuthenticationProcessingFilter (
 
     private val authoritiesMapper: GrantedAuthoritiesMapper = NullAuthoritiesMapper(),
 
-    private val NO_CHECK_URL: String = "/login"
+    private val NO_CHECK_URL: String = "/members/new"
 
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-        if(request.requestURI.equals(NO_CHECK_URL)) {
-            filterChain.doFilter(request, response)
-            return
-        }
 
-        val refreshToken: Optional<String>? = jwtService.extractRefreshToken(request)
-            .filter { jwtService.isTokenValid(it.toString()) } ?: null
-
-        if(refreshToken != null) {
-            checkRefreshTokenAndReIssueAccessToken(response, refreshToken)
-            return
-        }
-
-        checkAccessTokenAndAuthentication(request, response, filterChain)
+        filterChain.doFilter(request, response)
+        return
+    //        if(request.requestURI.equals(NO_CHECK_URL)) {
+//            filterChain.doFilter(request, response)
+//            return
+//        }
+//
+//        val refreshToken: Optional<String>? = jwtService.extractRefreshToken(request)
+//            .filter { jwtService.isTokenValid(it.toString()) } ?: null
+//
+//        if(refreshToken != null) {
+//            checkRefreshTokenAndReIssueAccessToken(response, refreshToken)
+//            return
+//        }
+//
+//        checkAccessTokenAndAuthentication(request, response, filterChain)
     }
 
     private fun checkAccessTokenAndAuthentication(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
