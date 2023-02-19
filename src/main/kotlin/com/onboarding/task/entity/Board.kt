@@ -10,6 +10,7 @@ class Board (
 
     var title: String,
 
+    @Lob
     var content: String,
     @OneToMany(mappedBy = "board", cascade = [CascadeType.ALL], orphanRemoval = true)
     var comments: MutableList<Comment> = mutableListOf(),

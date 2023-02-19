@@ -43,6 +43,7 @@ class CustomBoardRepositoryImpl (
         val boards = query.selectFrom(board)
             .join(board.writer, member)
             .fetchJoin()
+            .orderBy(board.createdAt.desc())
             .fetch()
 
         return boards.stream().map { BoardInfoBriefResponse.of(it) }.toList()
@@ -53,6 +54,7 @@ class CustomBoardRepositoryImpl (
             .join(board.writer, member)
             .where(board.writer.memberName.eq("테스트")) // 현재 로그인 된 사용자로 바꿔야됨.
             .fetchJoin()
+            .orderBy(board.createdAt.desc())
             .fetch()
         return boards.stream().map { BoardInfoBriefResponse.of(it) }.toList()
     }
@@ -61,6 +63,7 @@ class CustomBoardRepositoryImpl (
         val boards = query.selectFrom(board)
             .join(bookMark).on(board.id.eq(bookMark.board.id))
             .where(bookMark.member.id.eq(1))
+            .orderBy(board.createdAt.desc())
             .fetch()
         return boards.stream().map { BoardInfoBriefResponse.of(it) }.toList()
     }
