@@ -21,4 +21,8 @@ interface BoardService {
     fun getBoards(pageable: Pageable, boardSearchCondition: BoardSearchCondition): BoardPagingResponse
 
     fun getBoardsSimple() : MutableList<BoardInfoBriefResponse>
+
+    fun getMyBoards() : MutableList<BoardInfoBriefResponse>
+    fun getMyBookMark() : MutableList<BoardInfoBriefResponse>
+
 }

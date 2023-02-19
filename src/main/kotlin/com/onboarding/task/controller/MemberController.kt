@@ -2,6 +2,7 @@ package com.onboarding.task.controller
 
 import com.onboarding.task.dto.request.MemberInfoUpdateRequest
 import com.onboarding.task.dto.request.MemberSignUpRequest
+import com.onboarding.task.service.BoardService
 import com.onboarding.task.service.MemberService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/members")
 class MemberController (
-    private val memberService: MemberService
+    private val memberService: MemberService,
+    private val boardService: BoardService
 ) {
 
     @GetMapping("/new")
@@ -58,7 +60,12 @@ class MemberController (
     @GetMapping("/{id}")
     fun getUserInfo(@Valid @PathVariable("id") id: Long, model: Model) : String {
         val member = memberService.getUserInfo(id)
+        val boards = boardService.getMyBoards()
+        val bookMark = boardService.getMyBookMark()
         model.addAttribute("myInfo", member)
+        model.addAttribute("boards", boards)
+        model.addAttribute("bookMark", bookMark)
         return "members/myPage"
     }
+
 }

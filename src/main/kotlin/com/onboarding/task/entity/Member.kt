@@ -1,5 +1,6 @@
 package com.onboarding.task.entity
 
+import com.onboarding.task.enum.BookMarkStatus
 import com.onboarding.task.enum.MemberRole
 import jakarta.persistence.*
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -55,7 +56,11 @@ class Member (
     }
 
     fun markBoard(board: Board) {
-        this.bookMark.add(BookMark(this, board))
+        this.bookMark.add(BookMark(this, board, BookMarkStatus.MARKED))
+    }
+
+    fun unmarkBoard(boardId: Long) {
+        this.bookMark.first { it.board.id == boardId }.unmarkPost()
     }
 
     // 비밀번호 암호화

@@ -20,9 +20,57 @@
             <label th:for="memberName">이름</label>
             <input type="text" th:field="*{memberName}" class="form-control" placeholder="이름을 입력하세요">
         </div>
-
     </div>
-    <br/>
+
+    <!--내가 찜한 글-->
+    <div>
+        <h4>내가 찜한 글</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일자</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="board : ${bookMark}">
+                <td th:text="${board.id}"></td>
+                <td><a href="#" th:href="@{/boards/{id} (id=${board.id})}" th:text="${board.title}"></a></td>
+                <td th:text="${board.writerName}"></td>
+                <td th:text="${board.createdDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--내가 작성한 글-->
+    <div>
+        <h4>내가 작성한 글</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일자</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="board : ${boards}">
+                <td th:text="${board.id}"></td>
+                <td><a href="#" th:href="@{/boards/{id} (id=${board.id})}" th:text="${board.title}"></a></td>
+                <td th:text="${board.writerName}"></td>
+                <td th:text="${board.createdDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
 </body>
