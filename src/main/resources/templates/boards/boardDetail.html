@@ -44,7 +44,7 @@
             <tr th:each="comment : ${board.getComments()}">
                 <td th:text="${comment.content}"></td>
                 <td th:text="${comment.writerDto.memberName}"></td>
-                <td th:text="${comment.createdAt}"></td>
+                <td th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             </tbody>
         </table>

@@ -10,7 +10,7 @@ data class BoardInfoBriefResponse (
     val title: String,
     val writerName: String,
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    val createdDate: LocalDateTime
+    val createdAt: LocalDateTime
 ) {
 
     companion object {
@@ -19,7 +19,7 @@ data class BoardInfoBriefResponse (
                 id = board.id!!,
                 title = board.title,
                 writerName = board.writer!!.memberName,
-                createdDate = board.createdAt
+                createdAt = board.createdAt
             )
         }
     }
