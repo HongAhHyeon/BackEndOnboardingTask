@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-class SignInServiceTest @Autowired constructor(
+class LoginServiceTest @Autowired constructor(
     val mockMvc: MockMvc,
     val memberRepository: MemberRepository,
     val em: EntityManager,

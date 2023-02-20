@@ -1,4 +1,4 @@
-package com.onboarding.task.filter
+package com.onboarding.task.config.security.filter
 
 import com.onboarding.task.entity.Member
 import com.onboarding.task.repository.MemberRepository
@@ -17,38 +17,37 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.filter.OncePerRequestFilter
 import java.util.*
 
-class JWTAuthenticationProcessingFilter (
+class JWTAuthenticationProcessingFilter(
     private val jwtService: JwtService,
     private val memberRepository: MemberRepository,
 
     private val authoritiesMapper: GrantedAuthoritiesMapper = NullAuthoritiesMapper(),
 
-    private val NO_CHECK_URL: String = "/members/new"
+    private val NO_CHECK_URL: Array<String> = arrayOf("/login", "/members/signIn", "/members/new")
 
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
 
-        filterChain.doFilter(request, response)
-        return
-    //        if(request.requestURI.equals(NO_CHECK_URL)) {
-//            filterChain.doFilter(request, response)
-//            return
-//        }
-//
-//        val refreshToken: Optional<String>? = jwtService.extractRefreshToken(request)
-//            .filter { jwtService.isTokenValid(it.toString()) } ?: null
-//
-//        if(refreshToken != null) {
-//            checkRefreshTokenAndReIssueAccessToken(response, refreshToken)
-//            return
-//        }
-//
-//        checkAccessTokenAndAuthentication(request, response, filterChain)
+
+        if (NO_CHECK_URL.contains(request.requestURI)) {
+            filterChain.doFilter(request, response)
+            return
+        }
+
+        val refreshToken: Optional<String>? = jwtService.extractRefreshToken(request)
+            .filter { jwtService.isTokenValid(it.toString()) } ?: null
+
+        if (refreshToken != null) {
+            checkRefreshTokenAndReIssueAccessToken(response, refreshToken)
+            return
+        }
+
+        checkAccessTokenAndAuthentication(request, response, filterChain)
     }
 
     private fun checkAccessTokenAndAuthentication(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-        jwtService.extractAccessToken(request).filter{jwtService.isTokenValid(it.toString())}.let { jwtService.extractMemberEmail(it.toString())}
+        jwtService.extractAccessToken(request).filter { jwtService.isTokenValid(it.toString()) }.let { jwtService.extractMemberEmail(it.toString()) }
             .let { memberRepository.findByMemberEmail(it.toString()) }
             ?.let { saveAuthentication(it) }
 
@@ -63,9 +62,9 @@ class JWTAuthenticationProcessingFilter (
             .roles(member.role.name)
             .build()
 
-        val authentication : Authentication = UsernamePasswordAuthenticationToken(user, null, authoritiesMapper.mapAuthorities(user.authorities))
+        val authentication: Authentication = UsernamePasswordAuthenticationToken(user, null, authoritiesMapper.mapAuthorities(user.authorities))
 
-        val context : SecurityContext = SecurityContextHolder.createEmptyContext()
+        val context: SecurityContext = SecurityContextHolder.createEmptyContext()
         context.authentication = authentication
         SecurityContextHolder.setContext(context)
     }

@@ -32,5 +32,6 @@ spring:
       filter:
         enabled: true
 
+
   profiles:
     include: jwt

@@ -38,7 +38,7 @@ class MemberServiceImpl(
 
     @Transactional
     override fun signInUser(req: MemberSignInRequest): UserDto {
-        val user = memberRepository.findByMemberEmail(req.userEmail) ?: throw IllegalArgumentException("사용자 정보 없음.")
+        val user = memberRepository.findByMemberEmail(req.memberEmail) ?: throw IllegalArgumentException("사용자 정보 없음.")
         validatePassword(req, user)
         val subject = createSubject(user)
 //        val accessToken = tokenService.createAccessToken(subject)
@@ -76,7 +76,7 @@ class MemberServiceImpl(
         }
     }
     private fun validatePassword(req : MemberSignInRequest, member: Member) {
-        if(!passwordEncoder.matches(req.userPw, member.memberPw)) throw IllegalArgumentException("비밀번호 오류")
+        if(!passwordEncoder.matches(req.memberPw, member.memberPw)) throw IllegalArgumentException("비밀번호 오류")
     }
 
     private fun createSubject(member: Member) : String {

@@ -6,8 +6,9 @@ import jakarta.validation.constraints.NotNull
 data class MemberSignInRequest(
     @NotNull
     @Email
-    var userEmail: String,
+    var memberEmail: String,
     @NotNull
-    var userPw: String,
+    var memberPw: String,
 ) {
+    constructor() : this("", "")
 }

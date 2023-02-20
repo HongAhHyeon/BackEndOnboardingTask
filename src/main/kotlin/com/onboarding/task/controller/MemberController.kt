@@ -1,6 +1,7 @@
 package com.onboarding.task.controller
 
 import com.onboarding.task.dto.request.MemberInfoUpdateRequest
+import com.onboarding.task.dto.request.MemberSignInRequest
 import com.onboarding.task.dto.request.MemberSignUpRequest
 import com.onboarding.task.service.BoardService
 import com.onboarding.task.service.MemberService
@@ -17,6 +18,15 @@ class MemberController (
     private val memberService: MemberService,
     private val boardService: BoardService
 ) {
+    /**
+     * 로그인
+     */
+    @GetMapping("/signIn")
+    fun signIn(model: Model) : String {
+        model.addAttribute("memberSignInRequest", MemberSignInRequest())
+        return "members/signIn"
+    }
+
 
     @GetMapping("/new")
     fun createUserForm(model: Model) : String {
@@ -35,11 +45,11 @@ class MemberController (
             return "members/createMemberForm"
         }
         memberService.signUpUser(req)
-        return "redirect:/"
+        return "redirect:/home"
     }
 
     /**
-     * 회원 정보 수정 ??
+     * 회원 정보 수정
      */
     @PutMapping("/{id}")
     fun updateUserInfo(@Valid @PathVariable("id") id: Long, req: MemberInfoUpdateRequest) {

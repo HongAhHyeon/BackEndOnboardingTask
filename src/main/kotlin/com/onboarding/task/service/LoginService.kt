@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
 @Service
-class SignInService (
+class LoginService (
 
     private val memberRepository: MemberRepository
 
@@ -20,5 +20,4 @@ class SignInService (
             .roles(member.role.name)
             .build()
     }
-
 }

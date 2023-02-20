@@ -25,12 +25,14 @@ class LoginSuccessJWTProvideHandler (
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken)
 
-        memberRepository.findByMemberEmail(userEmail)?.updateRefreshToken(refreshToken)
+//        memberRepository.findByMemberEmail(userEmail)?.updateRefreshToken(refreshToken)
+        jwtService.updateRefreshToken(userEmail, refreshToken)
 
         println("로그인에 성공합니다. JWT를 발급합니다. username : " + userEmail)
         println("AccessToken을 발급합니다. AccessToken : " + accessToken)
         println("RefreshToken을 발급합니다. RefreshToken : " + refreshToken)
 
+//        response.sendRedirect("/home")
 //        response.writer.write("success")
 
     }
