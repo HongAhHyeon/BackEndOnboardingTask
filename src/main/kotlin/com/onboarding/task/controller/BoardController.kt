@@ -1,9 +1,6 @@
 package com.onboarding.task.controller
 
-import com.onboarding.task.dto.request.BoardCreateRequest
-import com.onboarding.task.dto.request.BoardUpdateRequest
-import com.onboarding.task.dto.request.CommentCreateRequest
-import com.onboarding.task.dto.request.MemberSignUpRequest
+import com.onboarding.task.dto.request.*
 import com.onboarding.task.dto.response.BoardInfoResponse
 import com.onboarding.task.dto.response.BoardPagingResponse
 import com.onboarding.task.entity.condition.BoardSearchCondition
@@ -56,6 +53,7 @@ class BoardController(
         val board = boardService.getBoard(boardId)
         model.addAttribute("board", board)
         model.addAttribute("commentCreateRequest", CommentCreateRequest())
+        model.addAttribute("bookmark", BookMarkRequest())
         return "boards/boardDetail"
     }
 

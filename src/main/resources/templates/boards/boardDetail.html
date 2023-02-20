@@ -9,34 +9,41 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <div th:object="${board}">
-        <a href="#" th:href="@{/boards/{id}/edit (id=${board.id})}">수정</a>
-        <form th:action="@{/boards/{id} (id=${board.id})}" th:method="delete">
-            <button type="submit">삭제</button>
+        <form th:action="@{/boards/{id} (id=${board.id})}" th:method="delete" style="float: right;">
+            <button type="submit" class="btn btn-dark">삭제</button>
         </form>
+        <a href="#" th:href="@{/boards/{id}/edit (id=${board.id})}" class="btn btn-secondary" style="float: right;">수정</a>
         <div class="form-group">
             <label th:for="title">제목</label>
-            <label>
-                <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요"
+            <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요"
                        th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'" readonly>
-            </label>
             <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Incorrect date</p>
         </div>
         <div class="form-group">
             <label th:for="content">내용</label>
-            <label>
-                <input type="text" th:field="*{content}" class="form-control" readonly>
-            </label>
+            <input type="text" th:field="*{content}" class="form-control" style="height: 20em;" readonly>
         </div>
         <input id="boardId" type="hidden" th:value="${board.id}">
     </div>
 
-    <!--댓글 등록-->
-    <form th:action="@{/boards/{boardId}/comments/new (boardId=${board.id})}" th:object="${commentCreateRequest}" method="post">
-        <input id="comment" type="text" th:for="content" th:field="*{content}">
-        <button type="submit" class="btn btn-primary">Submit</button>
-
+    <!--찜하기-->
+    <form th:action="@{/bookmark/mark}" th:object="${bookmark}" method="post">
+        <input  type="hidden" th:for="boardId" th:field="*{boardId}" th:value="${board.id}">
+        <input  type="hidden" th:for="memberId" th:field="*{memberId}" th:value="${board.writerDto.memberId}">
+        <button type="submit" class="btn btn-primary btn-info" style="float: right;">찜하기</button>
         <!--        <input class="btn btn-primary" type="button" onclick="createComment()">등록</input>-->
     </form>
+<br>
+<br>
+<br>
+    <!--댓글 등록-->
+    <form th:action="@{/boards/{boardId}/comments/new (boardId=${board.id})}" th:object="${commentCreateRequest}" method="post">
+        <input id="comment" type="text" th:for="content" th:field="*{content}" placeholder="댓글 남기기" class="form-control">
+        <button type="submit" class="btn btn-primary form-control">등록</button>
+        <!--        <input class="btn btn-primary" type="button" onclick="createComment()">등록</input>-->
+    </form>
+    <br>
+    <br>
     <!--댓글 목록-->
     <div id="comments">
         <table class="table table-striped">
@@ -54,27 +61,16 @@
 </div>
 <script>
     const boardId = $("#boardId").val();
-    function createComment() {
-        var content = $("#comment").val();
-
-        $.ajax({
-            url: "/boards/${board.id}/comments/new"
-        })
-    }
-    function getComments() {
-        var comment = {
-
-        }
-        $.ajax({
-            type: "GET",
-            url: "/boards/"+boardId+"/comments",
-            dataType: "json",
-            success: function (data) {
-
-            }
-        });
-    }
-
+    // function addComment() {
+    //     var url = "/boards/"+boardId+"/comments/new";
+    //     axios.post(url, JSON.stringify(sendData), {
+    //         headers: { "Content-Type": `application/json`}
+    //     })
+    //         .then(function (response) {
+    //         console.log(response.headers)
+    //             window.location.replace("/");
+    //     })
+    // }
 </script>
 </body>
 </html>

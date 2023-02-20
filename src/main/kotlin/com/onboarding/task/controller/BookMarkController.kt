@@ -13,18 +13,19 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
-@RestController
+@Controller
 class BookMarkController(
     private val bookMarkService: BookMarkService
 ) {
 
     @PostMapping("/bookmark/mark")
-    fun markBoard(@RequestBody req: BookMarkRequest) {
+    fun markBoard(req: BookMarkRequest) : String {
         bookMarkService.markBoard(req)
+        return return "redirect:/boards/${req.boardId}"
     }
 
     @PutMapping("/bookmark/unmark")
-    fun unmarkBoard(@RequestBody req: BookMarkRequest) {
+    fun unmarkBoard( req: BookMarkRequest) {
         bookMarkService.unmarkBoard(req)
     }
 

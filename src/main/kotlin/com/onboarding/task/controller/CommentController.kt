@@ -14,15 +14,16 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
+@Controller
 @RequestMapping("/boards/{boardId}/comments")
 class CommentController (
     private val commentService: CommentService
 ){
 
     @PostMapping("/new")
-    fun create(@PathVariable("boardId") boardId: Long, req: CommentCreateRequest) {
+    fun create(@PathVariable("boardId") boardId: Long, req: CommentCreateRequest) : String {
         commentService.createComment(boardId, req)
+        return "redirect:/boards/$boardId"
     }
 
     @PutMapping("/{commentId}")

@@ -9,7 +9,7 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
-    <form id="loginForm" role="form" action="/members/new" th:object="${memberSignInRequest}" method="post" content="application/json">
+    <form id="loginForm" role="form" action="/login" th:object="${memberSignInRequest}" method="post" content="application/json">
         <div class="form-group">
             <label th:for="memberEmail">이메일</label>
             <input id="memberEmail" type="text" th:field="*{memberEmail}" class="form-control" placeholder="이메일을 입력하세요"
@@ -20,29 +20,27 @@
             <label th:for="memberPw">비밀번호</label>
             <input id="memberPw" type="password" th:field="*{memberPw}" class="form-control" placeholder="비밀번호를 입력하세요">
         </div>
-        <input type="button" class="btn btn-primary" onclick="signIn()">로그인</input>
+<!--        <input type="button" class="btn btn-primary" onclick="signIn()">로그인</input>-->
+        <button type="submit" class="btn btn-primary" onclick="signIn()">로그인</button>
     </form>
     <br/>
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
+
 <script>
-
-    function signIn() {
-        var memberEmail = $("#memberEmail").val();
-        var memberPw = $("#memberPw").val();
-        var sendData = {"username" : memberEmail, "password": memberPw};
-        $.ajax({
-            type: "POST",
-            url: "/login",
-            dataType: 'json',
-            data: JSON.stringify(sendData),
-            contentType: "application/json",
-            success : function(result) {
-                console.log(result)
-            }
-        })
-    }
-
+    // function signIn() {
+    //     var memberEmail = $("#memberEmail").val();
+    //     var memberPw = $("#memberPw").val();
+    //     var sendData = {"username" : memberEmail, "password": memberPw};
+    //
+    //     axios.post("/login", JSON.stringify(sendData), {
+    //         headers: { "Content-Type": `application/json`}
+    //     })
+    //         .then(function (response) {
+    //         console.log(response.headers)
+    //             window.location.replace("/");
+    //     })
+    // }
 </script>
 </body>
 </html>

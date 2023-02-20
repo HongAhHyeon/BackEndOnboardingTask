@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.web.DefaultRedirectStrategy
+import org.springframework.security.web.RedirectStrategy
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 
 class LoginSuccessJWTProvideHandler (
@@ -32,7 +34,8 @@ class LoginSuccessJWTProvideHandler (
         println("AccessToken을 발급합니다. AccessToken : " + accessToken)
         println("RefreshToken을 발급합니다. RefreshToken : " + refreshToken)
 
-//        response.sendRedirect("/home")
+        val redirectStrategy = DefaultRedirectStrategy()
+        redirectStrategy.sendRedirect(request, response, "/")
 //        response.writer.write("success")
 
     }

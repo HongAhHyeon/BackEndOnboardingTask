@@ -8,5 +8,5 @@ data class BookMarkRequest(
     val boardId: Long,
     val memberId: Long
     ) {
-
+    constructor() : this(0, 0)
 }
