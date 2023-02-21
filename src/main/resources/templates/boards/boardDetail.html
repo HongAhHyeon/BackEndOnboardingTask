@@ -30,7 +30,7 @@
     <form th:action="@{/bookmark/mark}" th:object="${bookmark}" method="post">
         <input  type="hidden" th:for="boardId" th:field="*{boardId}" th:value="${board.id}">
         <input  type="hidden" th:for="memberId" th:field="*{memberId}" th:value="${board.writerDto.memberId}">
-        <button type="submit" class="btn btn-primary btn-info" style="float: right;">찜하기</button>
+        <button id="jjim" type="button" onclick="markBoard()" class="btn btn-primary btn-info" style="float: right;"><p id="word">찜하기<p></button>
         <!--        <input class="btn btn-primary" type="button" onclick="createComment()">등록</input>-->
     </form>
 <br>
@@ -61,9 +61,9 @@
 </div>
 <script>
     const boardId = $("#boardId").val();
+    const memberId = 1;
     var token = localStorage.getItem("accessToken")
     localStorage.setItem("accessToken", token)
-    alert(token)
     // function addComment() {
     //     var url = "/boards/"+boardId+"/comments/new";
     //     axios.post(url, JSON.stringify(sendData), {
@@ -74,6 +74,32 @@
     //             window.location.replace("/");
     //     })
     // }
+
+    function markBoard() {
+        var word = $("#word").text();
+        var sendData = {"boardId" : boardId, "memberId": memberId};
+        if(word == "찜하기") {
+        axios.post("/bookmark/mark", sendData, {
+            headers: { "Content-Type": `application/json`}
+        })
+            .then(function (response) {
+                localStorage.setItem("accessToken", response.headers.accesstoken)
+                localStorage.setItem("refreshToken", response.headers.refreshtoken)
+                alert("찜 완료!");
+                $("#word").text("찜취소");
+            })
+        }else {
+            axios.put("/bookmark/unmark", sendData, {
+                headers: { "Content-Type": `application/json`}
+            })
+                .then(function (response) {
+                    localStorage.setItem("accessToken", response.headers.accesstoken)
+                    localStorage.setItem("refreshToken", response.headers.refreshtoken)
+                    alert("찜 취소!");
+                    $("#word").text("찜하기");
+                })
+        }
+    }
 </script>
 </body>
 </html>

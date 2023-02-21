@@ -39,8 +39,8 @@ class ViewsFilter(
     )
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-//        filterChain.doFilter(request, response)
-//        return
+        filterChain.doFilter(request, response)
+        return
 //        val refreshToken: Optional<String> = jwtService.extractRefreshToken(request).filter { jwtService.isTokenValid(it.toString())}
 //
 //        if (refreshToken != null) {
@@ -48,7 +48,7 @@ class ViewsFilter(
 //            return
 //        }
 
-        checkAccessTokenAndAuthentication(request, response, filterChain)
+//        checkAccessTokenAndAuthentication(request, response, filterChain)
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {

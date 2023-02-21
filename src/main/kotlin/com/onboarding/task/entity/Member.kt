@@ -63,6 +63,10 @@ class Member (
         this.bookMark.first { it.board.id == boardId }.unmarkPost()
     }
 
+    fun remarkBoard(boardId: Long) {
+        this.bookMark.first{it.board.id == boardId}.markPost()
+    }
+
     // 비밀번호 암호화
     fun encodePw(passwordEncoder: PasswordEncoder) {
         this.memberPw = passwordEncoder.encode(memberPw)
