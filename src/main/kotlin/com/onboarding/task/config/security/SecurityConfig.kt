@@ -3,6 +3,7 @@ package com.onboarding.task.config.security
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.onboarding.task.config.security.filter.JWTAuthenticationProcessingFilter
 import com.onboarding.task.config.security.filter.JsonUserEmailPasswordAuthenticationFilter
+import com.onboarding.task.config.security.filter.ViewsFilter
 import com.onboarding.task.handler.LoginFailureHandler
 import com.onboarding.task.handler.LoginSuccessJWTProvideHandler
 import com.onboarding.task.repository.MemberRepository
@@ -58,7 +59,8 @@ class SecurityConfig (
 
 
         http.addFilterAfter(jsonUserEmailPasswordLoginFilter(), LogoutFilter::class.java)
-        http.addFilterBefore(jwtAuthenticationProcessingFilter(), JsonUserEmailPasswordAuthenticationFilter::class.java)
+//        http.addFilterBefore(jwtAuthenticationProcessingFilter(), JsonUserEmailPasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(viewsFilter(), JsonUserEmailPasswordAuthenticationFilter::class.java)
         return http.build()
     }
 
@@ -89,9 +91,13 @@ class SecurityConfig (
         return jsonUserEmailPasswordLoginFilter
     }
 
+//    @Bean
+//    fun jwtAuthenticationProcessingFilter(): JWTAuthenticationProcessingFilter {
+//        return JWTAuthenticationProcessingFilter(jwtService, memberRepository)
+//    }
     @Bean
-    fun jwtAuthenticationProcessingFilter(): JWTAuthenticationProcessingFilter {
-        return JWTAuthenticationProcessingFilter(jwtService, memberRepository)
+    fun viewsFilter(): ViewsFilter {
+        return ViewsFilter(jwtService, memberRepository)
     }
 
     @Bean

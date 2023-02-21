@@ -21,7 +21,7 @@ class BookMarkController(
     @PostMapping("/bookmark/mark")
     fun markBoard(req: BookMarkRequest) : String {
         bookMarkService.markBoard(req)
-        return return "redirect:/boards/${req.boardId}"
+        return "redirect:/boards/${req.boardId}"
     }
 
     @PutMapping("/bookmark/unmark")

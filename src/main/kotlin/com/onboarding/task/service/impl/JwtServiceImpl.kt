@@ -82,21 +82,30 @@ class JwtServiceImpl (
         tokenMap[ACCESS_TOKEN_SUBJECT] = accessToken
     }
 
-    override fun extractAccessToken(request: HttpServletRequest) : Optional<String> {
+    override fun extractAccessToken(request: HttpServletRequest) : String {
 //        return Optional.ofNullable(request.getHeader(accessHeader)).map { accessToken -> accessToken.replace(BEARER, "") }.orElse(null)
-        return Optional.ofNullable(request.getHeader(accessHeader)).filter {
-            accessToken -> accessToken.startsWith(BEARER)}
-            .map { accessToken -> accessToken.replace(BEARER, "") }
+        val queryString = request.getParameter("accessToken")
+        if(queryString != null) {
+            return queryString
+        }else {
+            return Optional.ofNullable(request.getHeader(accessHeader)).filter { accessToken -> accessToken.startsWith(BEARER) }
+                .map { accessToken -> accessToken.replace(BEARER, "") }.toString()
+        }
     }
 
     override fun extractRefreshToken(request: HttpServletRequest) : Optional<String> {
-        return Optional.ofNullable(request.getHeader(refreshHeader)).filter {
-            refreshToken -> refreshToken.startsWith(BEARER)
-        }.map { refreshToken -> refreshToken.replace(BEARER, "") }
+        val queryString = request.getParameter("refreshToken")
+        if(queryString != null) {
+            return Optional.ofNullable(queryString)
+        }else {
+            return Optional.ofNullable(request.getHeader(refreshHeader)).filter { refreshToken ->
+                refreshToken.startsWith(BEARER)
+            }.map { refreshToken -> refreshToken.replace(BEARER, "") }
+        }
     }
 
-    override fun extractMemberEmail(accessToken: String) : Optional<String> {
-        return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USEREMAIL_CLAIM).asString())
+    override fun extractMemberEmail(accessToken: String) : String {
+        return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USEREMAIL_CLAIM).asString()).toString()
     }
 
     override fun setAccessTokenHeader(response: HttpServletResponse, accessToken: String) {
@@ -107,8 +116,8 @@ class JwtServiceImpl (
         response.setHeader(refreshHeader, refreshToken)
     }
 
-    override fun isTokenValid(token: String): Boolean {
-        JWT.require(Algorithm.HMAC512(secret)).build().verify(token) ?: throw Exception("유효하지 않은 토큰입니다.")
-        return true
-    }
+//    override fun isTokenValid(token: String): Boolean {
+//        JWT.require(Algorithm.HMAC512(secret)).build().verify(token) ?: throw Exception("유효하지 않은 토큰입니다.")
+//        return true
+//    }
 }

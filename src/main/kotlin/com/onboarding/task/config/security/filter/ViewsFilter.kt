@@ -14,35 +14,34 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher
+import org.springframework.security.web.util.matcher.OrRequestMatcher
+import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 import java.util.*
 
-class JWTAuthenticationProcessingFilter(
+class ViewsFilter(
     private val jwtService: JwtService,
     private val memberRepository: MemberRepository,
 
     private val authoritiesMapper: GrantedAuthoritiesMapper = NullAuthoritiesMapper(),
 
-    private val NO_CHECK_URL: Array<String> = arrayOf("/login", "/members/signIn", "/members/new")
 
 ) : OncePerRequestFilter() {
+
+    private val matcher = AntPathRequestMatcher("/**")
+    private val antiMatchers = arrayOf(
+        AntPathRequestMatcher("/login"),
+        AntPathRequestMatcher("/members/signIn"),
+        AntPathRequestMatcher("/members/new"),
+        AntPathRequestMatcher("/boards/**")
+    )
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
 //        filterChain.doFilter(request, response)
 //        return
-        if (NO_CHECK_URL.contains(request.requestURI)) {
-            filterChain.doFilter(request, response)
-            return
-        }
-
-//        val headerNames = request.headerNames
-//        while (headerNames.hasMoreElements()) {
-//            val key = headerNames.nextElement()
-//            val value = request.getHeader(key)
-//            println("key : " + key +" value : " + value)
-//        }
-//
-//        val refreshToken: Optional<String>? = jwtService.extractRefreshToken(request) ?: null
+//        val refreshToken: Optional<String> = jwtService.extractRefreshToken(request).filter { jwtService.isTokenValid(it.toString())}
 //
 //        if (refreshToken != null) {
 //            checkRefreshTokenAndReIssueAccessToken(response, refreshToken)
@@ -52,10 +51,16 @@ class JWTAuthenticationProcessingFilter(
         checkAccessTokenAndAuthentication(request, response, filterChain)
     }
 
-    private fun checkAccessTokenAndAuthentication(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        if (OrRequestMatcher(*antiMatchers).matches(request)) {
+            return true
+        }
+        return NegatedRequestMatcher(matcher).matches(request)
+    }
 
-        jwtService.extractAccessToken(request).let { jwtService.extractMemberEmail(it.toString()) }
-            .let { memberRepository.findByMemberEmail(it.toString()) }
+    private fun checkAccessTokenAndAuthentication(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+        jwtService.extractAccessToken(request).let { jwtService.extractMemberEmail(it)}
+            .let { memberRepository.findByMemberEmail(it) }
             ?.let { saveAuthentication(it) }
 
         filterChain.doFilter(request, response)
@@ -79,5 +84,4 @@ class JWTAuthenticationProcessingFilter(
     private fun checkRefreshTokenAndReIssueAccessToken(response: HttpServletResponse, refreshToken: Optional<String>?) {
         memberRepository.findByRefreshToken(refreshToken.toString())?.let { jwtService.sendAccessToken(response, jwtService.createAccessToken(it.memberEmail)) }
     }
-
 }

@@ -19,14 +19,30 @@
 <!--        <p class="lead">주문 기능</p>-->
 <!--        <p>-->
 <!--            <a class="btn btn-lg btn-info" href="/order">상품 주문</a>-->
-<!--            <a class="btn btn-lg btn-info" href="/orders">주문 내역</a></p>-->
-        <a class="btn btn-lg btn-dark" href="/members">마이페이지</a>
-        <a class="btn btn-lg btn-info" href="/boards">게시판</a>
+<!--&lt;!&ndash;            <a class="btn btn-lg btn-info" href="/orders">주문 내역</a></p>&ndash;&gt;-->
+        <a class="btn btn-lg btn-dark" onclick="members()">마이페이지</a>
+        <a class="btn btn-lg btn-info" onclick="boards()">게시판</a>
 
 
 
     </div>
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
+<script>
+    var token = localStorage.getItem("accessToken")
+    localStorage.setItem("accessToken", token)
+    console.log(token)
+    alert(token)
+
+    function members() {
+        location.href = "/members/?accessToken=" + token
+    }
+
+    function boards() {
+        location.href = "/boards?accessToken="+token
+    }
+
+
+</script>
 </body>
 </html>

@@ -21,7 +21,8 @@
 
             <tr th:each="board : ${boards}">
                 <td th:text="${board.id}"></td>
-                <td><a href="#" th:href="@{/boards/{id} (id=${board.id})}" th:text="${board.title}"></a></td>
+                <td><a th:href="@{/boards/{id} (id=${board.id})}" th:text="${board.title}"></a></td>
+<!--                <td><a onclick="board(this)" th:text="${board.title}" th:value="${board.id}"></a></td>-->
                 <td th:text="${board.writerName}"></td>
                 <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
@@ -31,5 +32,18 @@
 
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
+<script>
+    var token = localStorage.getItem("accessToken")
+    localStorage.setItem("accessToken", token)
+    console.log(token)
+    alert(token)
+    function board(boardId) {
+        alert(boardId.value)
+        location.href = "/boards/"+boardId+"?accessToken="+token
+    }
+
+
+
+</script>
 </body>
 </html>

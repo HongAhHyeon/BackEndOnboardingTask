@@ -34,8 +34,8 @@ class LoginSuccessJWTProvideHandler (
         println("AccessToken을 발급합니다. AccessToken : " + accessToken)
         println("RefreshToken을 발급합니다. RefreshToken : " + refreshToken)
 
-        val redirectStrategy = DefaultRedirectStrategy()
-        redirectStrategy.sendRedirect(request, response, "/")
+//        val redirectStrategy = DefaultRedirectStrategy()
+//        redirectStrategy.sendRedirect(request, response, "/")
 //        response.writer.write("success")
 
     }

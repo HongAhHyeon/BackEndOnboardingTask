@@ -20,27 +20,31 @@
             <label th:for="memberPw">비밀번호</label>
             <input id="memberPw" type="password" th:field="*{memberPw}" class="form-control" placeholder="비밀번호를 입력하세요">
         </div>
-<!--        <input type="button" class="btn btn-primary" onclick="signIn()">로그인</input>-->
-        <button type="submit" class="btn btn-primary" onclick="signIn()">로그인</button>
+        <button type="button" class="btn btn-primary" onclick="signIn()">로그인</button>
+<!--        <button type="submit" class="btn btn-primary" onclick="signIn()">로그인</button>-->
     </form>
     <br/>
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
 
 <script>
-    // function signIn() {
-    //     var memberEmail = $("#memberEmail").val();
-    //     var memberPw = $("#memberPw").val();
-    //     var sendData = {"username" : memberEmail, "password": memberPw};
-    //
-    //     axios.post("/login", JSON.stringify(sendData), {
-    //         headers: { "Content-Type": `application/json`}
-    //     })
-    //         .then(function (response) {
-    //         console.log(response.headers)
-    //             window.location.replace("/");
-    //     })
-    // }
+    function signIn() {
+        var memberEmail = $("#memberEmail").val();
+        var memberPw = $("#memberPw").val();
+        var sendData = {"username" : memberEmail, "password": memberPw};
+
+        axios.post("/login", JSON.stringify(sendData), {
+            headers: { "Content-Type": `application/json`}
+        })
+            .then(function (response) {
+            console.log(response.headers)
+
+            localStorage.setItem("accessToken", response.headers.accesstoken)
+            localStorage.setItem("refreshToken", response.headers.refreshtoken)
+                // alert("login success")
+            location.href = "/?accessToken="+response.headers.accesstoken
+        })
+    }
 </script>
 </body>
 </html>

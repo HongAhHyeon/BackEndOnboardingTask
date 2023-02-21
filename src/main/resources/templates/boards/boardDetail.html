@@ -61,6 +61,9 @@
 </div>
 <script>
     const boardId = $("#boardId").val();
+    var token = localStorage.getItem("accessToken")
+    localStorage.setItem("accessToken", token)
+    alert(token)
     // function addComment() {
     //     var url = "/boards/"+boardId+"/comments/new";
     //     axios.post(url, JSON.stringify(sendData), {

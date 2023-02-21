@@ -23,17 +23,17 @@ class JsonUserEmailPasswordAuthenticationFilter (
 ) : AbstractAuthenticationProcessingFilter(DEFAULT_LOGIN_PATH_REQUEST_MATCHER) {
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
-        if(request?.contentType == null) {
+        if(request?.contentType == null || !request.contentType.equals(CONTENT_TYPE)) {
             throw AuthenticationServiceException("Authentication Content-Type not supported: " + request?.contentType)
         }
 
-        val userEmail = request.getParameter("memberEmail")
-        val password = request.getParameter("memberPw")
-//        val messageBody = StreamUtils.copyToString(request.inputStream, StandardCharsets.UTF_8)
-//        val userEmailPasswordMap = objectMapper.readValue(messageBody, Map::class.java)
-//
-//        val userEmail = userEmailPasswordMap[USEREMAIL_KEY]
-//        val password = userEmailPasswordMap[PASSWORD_KEY]
+//        val userEmail = request.getParameter("memberEmail")
+//        val password = request.getParameter("memberPw")
+        val messageBody = StreamUtils.copyToString(request.inputStream, StandardCharsets.UTF_8)
+        val userEmailPasswordMap = objectMapper.readValue(messageBody, Map::class.java)
+
+        val userEmail = userEmailPasswordMap[USEREMAIL_KEY]
+        val password = userEmailPasswordMap[PASSWORD_KEY]
 
         val authRequest: UsernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(userEmail, password)
 
