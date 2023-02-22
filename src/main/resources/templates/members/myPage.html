@@ -18,7 +18,8 @@
         </div>
         <div class="form-group">
             <label th:for="memberName">이름</label>
-            <input type="text" th:field="*{memberName}" class="form-control" placeholder="이름을 입력하세요">
+            <input id="memberName" type="text" th:field="*{memberName}" class="form-control" placeholder="이름을 입력하세요">
+            <button id="edit" type="button" onclick="editMemberName()" class="btn btn-primary btn-info" style="float: right;">수정</button>
         </div>
     </div>
 
@@ -73,5 +74,21 @@
 
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
+<script>
+    function editMemberName() {
+        var memberName = $("#memberName").val()
+        var sendData = {"memberName": memberName};
+        axios.put("/members/1", sendData, {
+            headers: { "Content-Type": `application/json`}
+        })
+            .then(function (response) {
+                localStorage.setItem("accessToken", response.headers.accesstoken)
+                localStorage.setItem("refreshToken", response.headers.refreshtoken)
+                alert("수정 완료!");
+                location.reload()
+            })
+
+    }
+</script>
 </body>
 </html>

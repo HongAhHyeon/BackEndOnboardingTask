@@ -26,14 +26,15 @@ class CommentController (
         return "redirect:/boards/$boardId"
     }
 
-    @PutMapping("/{commentId}")
+    @PutMapping("/{commentId}/edit")
     fun update(@PathVariable("boardId") boardId: Long, @PathVariable("commentId") commentId: Long, req: CommentUpdateRequest) {
         commentService.updateComment(commentId, req)
     }
 
     @DeleteMapping("/{commentId}")
-    fun delete(@PathVariable("boardId") boardId: Long, @PathVariable("commentId") commentId: Long) {
+    fun delete(@PathVariable("boardId") boardId: Long, @PathVariable("commentId") commentId: Long) : String {
         commentService.deleteComment(commentId)
+        return "redirect:/boards/$boardId"
     }
 
     @GetMapping("")

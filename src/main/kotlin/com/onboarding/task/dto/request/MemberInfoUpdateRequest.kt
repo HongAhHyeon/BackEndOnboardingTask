@@ -4,10 +4,10 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotNull
 
 data class MemberInfoUpdateRequest(
+//    @NotNull
+//    @Email
+//    var userEmail: String,
     @NotNull
-    @Email
-    var userEmail: String,
-    @NotNull
-    var userName: String
+    var memberName: String
 ) {
 }

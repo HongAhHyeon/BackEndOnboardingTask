@@ -13,14 +13,13 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-@Transactional
 @Service
 class CommentServiceImpl(
     val commentRepository: CommentRepository,
     val boardRepository: BoardRepository,
     val memberRepository: MemberRepository
 ) : CommentService {
-
+    @Transactional
     override fun createComment(boardId: Long, req: CommentCreateRequest) {
         val comment = req.toEntity()
 //        comment.confirmWriter(memberRepository.findByMemberEmail(SecurityUtil.getSignInUsername()) ?: throw Exception("사용자 정보 없음."))
@@ -29,26 +28,28 @@ class CommentServiceImpl(
 
         commentRepository.save(comment)
     }
-
+    @Transactional
     override fun updateComment(id: Long, req: CommentUpdateRequest) {
         val comment = commentRepository.findByIdOrNull(id) ?: throw Exception("댓글 정보 없음.")
         if(!comment.writer?.memberName.equals(SecurityUtil.getSignInUsername())) throw Exception ("댓글 수정 권한 없음.")
 
         comment.content = req.content
     }
-
+    @Transactional(readOnly = true)
     override fun getComment(id: Long): Comment {
         return commentRepository.findByIdOrNull(id) ?: throw Exception ("댓글 정보 없음.")
     }
 
+    @Transactional(readOnly = true)
     override fun getComments(boardId: Long): MutableList<CommentInfoResponse> {
         val comments = commentRepository.findCommentsByBoardId(boardId)
         return comments.stream().map { CommentInfoResponse.of(it) }.toList()
     }
 
+    @Transactional
     override fun deleteComment(id: Long) {
         val comment = commentRepository.findByIdOrNull(id) ?: throw Exception ("댓글 정보 없음.")
-        if(!comment.writer?.memberName.equals(SecurityUtil.getSignInUsername())) throw Exception ("댓글 삭제 권한 없음.")
+//        if(!comment.writer?.memberName.equals(SecurityUtil.getSignInUsername())) throw Exception ("댓글 삭제 권한 없음.")
 
         comment.delete()
         commentRepository.delete(comment)

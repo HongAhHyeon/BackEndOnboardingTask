@@ -47,10 +47,9 @@ class MemberServiceImpl(
 
     }
     @Transactional
-    override fun updateUserInfo(req: MemberInfoUpdateRequest) {
-        val user = memberRepository.findByMemberEmail(req.userEmail)
-        validateUserInfo(req.userEmail, req.userName)
-        user!!.updateMemberName(req.userName)
+    override fun updateUserInfo(id: Long, req: MemberInfoUpdateRequest) {
+        val user = memberRepository.findByIdOrNull(id) ?: throw IllegalArgumentException("사용자 정보 없음.")
+        user.updateMemberName(req.memberName)
 
     }
 

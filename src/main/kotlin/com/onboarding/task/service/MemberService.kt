@@ -14,7 +14,7 @@ interface MemberService {
 
   fun signInUser(req : MemberSignInRequest) : UserDto
 
-  fun updateUserInfo(req: MemberInfoUpdateRequest)
+  fun updateUserInfo(id: Long, req: MemberInfoUpdateRequest)
 
   fun updateUserPw(checkPw: String, newPw: String)
 

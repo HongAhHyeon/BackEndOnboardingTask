@@ -60,6 +60,7 @@ class BoardServiceImpl(
     override fun getMyBoards(): MutableList<BoardInfoBriefResponse> {
         return boardRepository.getMyBoards()
     }
+    @Transactional(readOnly = true)
 
     override fun getMyBookMark(): MutableList<BoardInfoBriefResponse> {
         return boardRepository.getMyBookMark()

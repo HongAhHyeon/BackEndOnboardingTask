@@ -52,8 +52,9 @@ class MemberController (
      * 회원 정보 수정
      */
     @PutMapping("/{id}")
-    fun updateUserInfo(@Valid @PathVariable("id") id: Long, req: MemberInfoUpdateRequest) {
-        memberService.updateUserInfo(req)
+    @ResponseBody
+    fun updateUserInfo(@Valid @PathVariable("id") id: Long, @RequestBody req: MemberInfoUpdateRequest) {
+        memberService.updateUserInfo(id, req)
     }
 
     /**

@@ -35,7 +35,8 @@ class ViewsFilter(
         AntPathRequestMatcher("/login"),
         AntPathRequestMatcher("/members/signIn"),
         AntPathRequestMatcher("/members/new"),
-        AntPathRequestMatcher("/boards/**")
+        AntPathRequestMatcher("/boards/**"),
+        AntPathRequestMatcher("/members/**")
     )
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
