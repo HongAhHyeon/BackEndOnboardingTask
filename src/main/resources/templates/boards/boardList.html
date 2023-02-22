@@ -29,7 +29,7 @@
             </tbody>
         </table>
     </div>
-
+    <a class="btn btn-lg btn-info" onclick="createBoard()">게시글 작성</a>
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
 <script>
@@ -39,6 +39,10 @@
     function board(boardId) {
         alert(boardId.value)
         location.href = "/boards/"+boardId+"?accessToken="+token
+    }
+
+    function createBoard() {
+        location.href = "/boards/new"
     }
 
 

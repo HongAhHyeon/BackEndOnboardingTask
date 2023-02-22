@@ -25,7 +25,7 @@ class BoardServiceImpl(
         val board = req.toEntity()
 
 //        post.confirmWriter(memberRepository.findByMemberEmail(SecurityUtil.getSignInUsername()) ?: throw IllegalArgumentException("사용자 정보 없음."))
-        board.confirmWriter(memberRepository.findByMemberEmail("aaa@aaa.com") ?: throw IllegalArgumentException("사용자 정보 없음."))
+        board.confirmWriter(memberRepository.findByMemberEmail("bbb@test.com") ?: throw IllegalArgumentException("사용자 정보 없음."))
         boardRepository.save(board)
     }
     @Transactional

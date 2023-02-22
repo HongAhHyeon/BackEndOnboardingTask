@@ -32,10 +32,9 @@
     var token = localStorage.getItem("accessToken")
     localStorage.setItem("accessToken", token)
     console.log(token)
-    alert(token)
 
     function members() {
-        location.href = "/members/?accessToken=" + token
+        location.href = "/members/1?accessToken=" + token
     }
 
     function boards() {
