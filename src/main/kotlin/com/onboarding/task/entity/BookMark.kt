@@ -14,6 +14,7 @@ class BookMark(
     val board: Board,
 
     @Enumerated(EnumType.STRING)
+    @Column
     var status: BookMarkStatus,
 
     @Id @GeneratedValue
