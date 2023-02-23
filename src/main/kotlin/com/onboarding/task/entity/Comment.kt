@@ -12,23 +12,23 @@ import jakarta.persistence.OneToMany
 @Entity
 class Comment(
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_id")
+    @JoinColumn(name = "writer_id", nullable = false)
     var writer: Member? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "board_id", nullable = false)
     var board: Board? =null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    var parent: Comment? = null,
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "parent_id")
+//    var parent: Comment? = null,
 
     var content: String,
 
     var isDeleted: Boolean = false,
 
-    @OneToMany(mappedBy = "parent")
-    var childrenComments : MutableList<Comment>? = null,
+//    @OneToMany(mappedBy = "parent")
+//    var childrenComments : MutableList<Comment>? = null,
 
     @Id @GeneratedValue
     @Column(name = "comment_id")
@@ -55,13 +55,13 @@ class Comment(
         board.comments.add(this)
     }
 
-    fun Parent(parent: Comment) {
-        this.parent = parent
-        parent.childrenComments?.add(this)
-    }
-
-    fun addChildren(child: Comment) {
-        childrenComments?.add(child)
-    }
+//    fun Parent(parent: Comment) {
+//        this.parent = parent
+//        parent.childrenComments?.add(this)
+//    }
+//
+//    fun addChildren(child: Comment) {
+//        childrenComments?.add(child)
+//    }
 
 }

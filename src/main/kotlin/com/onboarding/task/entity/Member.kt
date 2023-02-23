@@ -48,13 +48,6 @@ class Member (
         this.refreshToken = null
     }
 
-    fun addBoard(board: Board) {
-        boards.add(board)
-    }
-    fun addComment(comment: Comment) {
-        comments.add(comment)
-    }
-
     fun markBoard(board: Board) {
         this.bookMark.add(BookMark(this, board, BookMarkStatus.MARKED))
     }

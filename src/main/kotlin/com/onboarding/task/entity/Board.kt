@@ -5,13 +5,14 @@ import jakarta.persistence.*
 @Entity
 class Board (
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_id")
+    @JoinColumn(name = "writer_id", nullable = false)
     var writer: Member? = null,
 
     var title: String,
 
     @Lob
     var content: String,
+
     @OneToMany(mappedBy = "board", cascade = [CascadeType.ALL], orphanRemoval = true)
     var comments: MutableList<Comment> = mutableListOf(),
 

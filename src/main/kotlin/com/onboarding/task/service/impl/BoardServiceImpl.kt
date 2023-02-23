@@ -6,6 +6,7 @@ import com.onboarding.task.dto.request.BoardUpdateRequest
 import com.onboarding.task.dto.response.BoardInfoBriefResponse
 import com.onboarding.task.dto.response.BoardInfoResponse
 import com.onboarding.task.dto.response.BoardPagingResponse
+import com.onboarding.task.entity.Member
 import com.onboarding.task.entity.condition.BoardSearchCondition
 import com.onboarding.task.repository.BoardRepository
 import com.onboarding.task.repository.MemberRepository
@@ -24,7 +25,7 @@ class BoardServiceImpl(
     override fun createBoard(req: BoardCreateRequest) {
         val board = req.toEntity()
 
-//        post.confirmWriter(memberRepository.findByMemberEmail(SecurityUtil.getSignInUsername()) ?: throw IllegalArgumentException("사용자 정보 없음."))
+//        board.confirmWriter(getCurrentMember())
         board.confirmWriter(memberRepository.findByMemberEmail("bbb@test.com") ?: throw IllegalArgumentException("사용자 정보 없음."))
         boardRepository.save(board)
     }
@@ -61,13 +62,17 @@ class BoardServiceImpl(
         return boardRepository.getMyBoards()
     }
     @Transactional(readOnly = true)
-
     override fun getMyBookMark(): MutableList<BoardInfoBriefResponse> {
         return boardRepository.getMyBookMark()
     }
 
-    private fun checkAuthority(board: Board) {
-        if(!board.writer!!.memberName.equals(SecurityUtil.getSignInUsername()))
-            throw Exception("수정 권한 없음.")
+    // 서비스 계층에서 권한 검증을 하는 것 보다는 앞 단계에서 하는 것이 바람직하다.
+//    private fun checkAuthority(board: Board) {
+//        if(!board.writer!!.memberName.equals(SecurityUtil.getSignInUsername()))
+//            throw Exception("권한 없음.")
+//    }
+
+    private fun getCurrentMember() : Member {
+        return memberRepository.findByMemberEmail(SecurityUtil.getSignInUsername()) ?: throw IllegalArgumentException("사용자 정보 없음.")
     }
 }

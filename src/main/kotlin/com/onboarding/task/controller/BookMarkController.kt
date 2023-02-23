@@ -21,13 +21,11 @@ class BookMarkController(
     @PostMapping("/bookmark/mark")
     fun markBoard(@RequestBody req: BookMarkRequest) {
         bookMarkService.markBoard(req)
-//        return "redirect:/boards/${req.boardId}"
     }
 
     @PutMapping("/bookmark/unmark")
     fun unmarkBoard(@RequestBody req: BookMarkRequest) {
         bookMarkService.unmarkBoard(req)
-//        return "redirect:/boards/${req.boardId}"
     }
 
 

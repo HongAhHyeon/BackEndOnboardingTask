@@ -53,6 +53,7 @@ class MemberServiceImpl(
 
     }
 
+    @Transactional
     override fun updateUserPw(checkPw: String, newPw: String) {
         val user = memberRepository.findByMemberEmail(SecurityUtil.getSignInUsername()) ?: throw Exception("사용자 정보 없음.")
         if(!user.validatePw(passwordEncoder, checkPw)) throw Exception("비밀번호가 일치하지 않습니다.")

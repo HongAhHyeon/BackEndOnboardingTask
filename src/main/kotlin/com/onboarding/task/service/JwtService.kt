@@ -21,5 +21,5 @@ interface JwtService{
     fun setAccessTokenHeader(response: HttpServletResponse, accessToken: String)
     fun setRefreshTokenHeader(response: HttpServletResponse, refreshToken: String)
 
-//    fun isTokenValid(token: String) : Boolean
+    fun isTokenValid(token: String) : Boolean
 }

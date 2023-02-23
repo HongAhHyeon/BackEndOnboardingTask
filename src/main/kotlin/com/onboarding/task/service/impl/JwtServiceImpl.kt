@@ -105,7 +105,7 @@ class JwtServiceImpl (
     }
 
     override fun extractMemberEmail(accessToken: String) : String {
-        return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USEREMAIL_CLAIM).asString()).toString()
+        return JWT.require(Algorithm.HMAC512(secret)).build().verify(accessToken).getClaim(USEREMAIL_CLAIM).asString()
     }
 
     override fun setAccessTokenHeader(response: HttpServletResponse, accessToken: String) {
@@ -116,8 +116,8 @@ class JwtServiceImpl (
         response.setHeader(refreshHeader, refreshToken)
     }
 
-//    override fun isTokenValid(token: String): Boolean {
-//        JWT.require(Algorithm.HMAC512(secret)).build().verify(token) ?: throw Exception("유효하지 않은 토큰입니다.")
-//        return true
-//    }
+    override fun isTokenValid(token: String): Boolean {
+        JWT.require(Algorithm.HMAC512(secret)).build().verify(token) ?: throw Exception("유효하지 않은 토큰입니다.")
+        return true
+    }
 }

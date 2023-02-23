@@ -62,7 +62,7 @@ class CustomBoardRepositoryImpl (
     override fun getMyBookMark(): MutableList<BoardInfoBriefResponse> {
         val boards = query.selectFrom(board)
             .join(bookMark).on(board.id.eq(bookMark.board.id))
-            .where(bookMark.member.id.eq(1))
+            .where(bookMark.member.id.eq(1)) //
             .orderBy(board.createdAt.desc())
             .fetch()
         return boards.stream().map { BoardInfoBriefResponse.of(it) }.toList()
