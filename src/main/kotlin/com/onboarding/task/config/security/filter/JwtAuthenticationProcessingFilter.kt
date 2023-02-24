@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.filter.OncePerRequestFilter
 import java.util.*
 
-class JWTAuthenticationProcessingFilter(
+class JwtAuthenticationProcessingFilter(
     private val jwtService: JwtService,
     private val memberRepository: MemberRepository,
 

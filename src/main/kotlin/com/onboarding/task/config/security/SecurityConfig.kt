@@ -1,7 +1,6 @@
 package com.onboarding.task.config.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.onboarding.task.config.security.filter.JWTAuthenticationProcessingFilter
 import com.onboarding.task.config.security.filter.JsonUserEmailPasswordAuthenticationFilter
 import com.onboarding.task.config.security.filter.ViewsFilter
 import com.onboarding.task.handler.LoginFailureHandler
@@ -20,9 +19,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.logout.LogoutFilter
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import java.lang.Exception
 
 @Configuration
